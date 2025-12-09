@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:BankSystem.UI.Converters"
+             xmlns:controls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+             x:Class="BankSystem.UI.Views.AccountsView">
+  <UserControl.Resources>
+    <conv:MaskingConverter x:Key="MaskingConverter"/>
+  </UserControl.Resources>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="8" Margin="0 8 0 0">
+      <TextBlock Text="Monto" VerticalAlignment="Center"/>
+      <NumericUpDown Minimum="0" Maximum="1000000" Width="120" Value="{Binding Amount}"/>
+      <Button Content="Depositar" Command="{Binding DepositCommand}"/>
+      <Button Content="Retirar" Command="{Binding WithdrawCommand}"/>
+      <Button Content="Transferir" Command="{Binding TransferCommand}"/>
+      <Button Content="Freeze" Command="{Binding FreezeCommand}"/>
+      <Button Content="Unfreeze" Command="{Binding UnfreezeCommand}"/>
+      <TextBlock Text="{Binding Status}" Margin="12 0"/>
+    </StackPanel>
+    <controls:DataGrid ItemsSource="{Binding Accounts}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedAccount}">
+      <controls:DataGrid.Columns>
+        <controls:DataGridTextColumn Header="Cuenta" Binding="{Binding Number, Converter={StaticResource MaskingConverter}, ConverterParameter=account}"/>
+        <controls:DataGridTextColumn Header="Tipo" Binding="{Binding Type}"/>
+        <controls:DataGridTextColumn Header="Moneda" Binding="{Binding Currency}"/>
+        <controls:DataGridTextColumn Header="Balance" Binding="{Binding Balance, StringFormat='{}{0:C}'}"/>
+        <controls:DataGridTextColumn Header="Estado" Binding="{Binding Status}"/>
+        <controls:DataGridTextColumn Header="Cliente" Binding="{Binding CustomerId}"/>
+      </controls:DataGrid.Columns>
+    </controls:DataGrid>
+  </DockPanel>
+</UserControl>

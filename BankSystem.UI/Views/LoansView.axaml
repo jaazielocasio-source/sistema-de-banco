@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+             x:Class="BankSystem.UI.Views.LoansView">
+  <Grid ColumnDefinitions="2*,3*">
+    <StackPanel Spacing="8" Margin="0 0 12 0">
+      <TextBlock Text="Préstamos" FontSize="20" FontWeight="Bold"/>
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="Cliente Id"/>
+        <NumericUpDown Minimum="1" Maximum="999999" Value="{Binding CustomerId}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="Tipo"/>
+        <ComboBox SelectedValue="{Binding LoanType}" SelectedValueBinding="{Binding Tag}">
+          <ComboBoxItem Content="1 Personal" Tag="1"/>
+          <ComboBoxItem Content="2 Hipotecario" Tag="2"/>
+          <ComboBoxItem Content="3 Auto" Tag="3"/>
+        </ComboBox>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="Principal"/>
+        <NumericUpDown Minimum="0" Maximum="10000000" Value="{Binding Principal}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="Meses"/>
+        <NumericUpDown Minimum="1" Maximum="360" Value="{Binding Months}"/>
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <TextBlock Text="Moneda"/>
+        <ComboBox SelectedValue="{Binding Currency}" SelectedValueBinding="{Binding Tag}">
+          <ComboBoxItem Content="USD" Tag="USD"/>
+          <ComboBoxItem Content="EUR" Tag="EUR"/>
+          <ComboBoxItem Content="JPY" Tag="JPY"/>
+          <ComboBoxItem Content="KRW" Tag="KRW"/>
+          <ComboBoxItem Content="BOB" Tag="BOB"/>
+          <ComboBoxItem Content="GBP" Tag="GBP"/>
+        </ComboBox>
+      </StackPanel>
+      <Button Content="Crear préstamo" Command="{Binding CreateLoanCommand}" Width="180"/>
+      <TextBlock Text="{Binding Installment, StringFormat='Cuota: {0:F2}'}"/>
+      <controls:DataGrid ItemsSource="{Binding Loans}" AutoGenerateColumns="True" SelectedItem="{Binding SelectedLoan}" Height="220"/>
+    </StackPanel>
+
+    <StackPanel Spacing="6">
+      <TextBlock Text="Tabla de amortización" FontWeight="Bold"/>
+      <controls:DataGrid ItemsSource="{Binding Amortization}" AutoGenerateColumns="True" Height="380"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="BankSystem.UI.Views.DashboardView">
+  <StackPanel Spacing="12">
+    <TextBlock Text="Dashboard" FontSize="22" FontWeight="Bold"/>
+    <StackPanel Orientation="Horizontal" Spacing="16">
+      <Border Background="#EEF2FF" Padding="12" Width="200">
+        <StackPanel>
+          <TextBlock Text="Saldo total" FontWeight="Bold"/>
+          <TextBlock Text="{Binding TotalBalance, StringFormat='{}{0:C}'}" FontSize="18"/>
+        </StackPanel>
+      </Border>
+      <Border Background="#ECFDF3" Padding="12" Width="200">
+        <StackPanel>
+          <TextBlock Text="# Cuentas" FontWeight="Bold"/>
+          <TextBlock Text="{Binding AccountCount}" FontSize="18"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+    <GroupBox Header="Próximos pagos automáticos">
+      <ListBox ItemsSource="{Binding UpcomingPayments}"/>
+    </GroupBox>
+    <Button Content="Refrescar" Command="{Binding RefreshCommand}" Width="140"/>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,41 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:BankSystem.UI.Views"
+             xmlns:vm="clr-namespace:BankSystem.UI.ViewModels"
+             xmlns:fluent="clr-namespace:Avalonia.Themes.Fluent;assembly=Avalonia.Themes.Fluent"
+             x:Class="BankSystem.UI.App">
+  <Application.Styles>
+    <fluent:FluentTheme/>
+    <StyleInclude Source="avares://BankSystem.UI/Styles/Theme.axaml"/>
+  </Application.Styles>
+
+  <Application.DataTemplates>
+    <DataTemplate DataType="vm:DashboardViewModel">
+      <views:DashboardView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:AccountsViewModel">
+      <views:AccountsView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:AccountDetailViewModel">
+      <views:AccountDetailView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:LoansViewModel">
+      <views:LoansView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:AutoPayViewModel">
+      <views:AutoPayView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:AutoPayWizardViewModel">
+      <views:AutoPayWizard/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:ReportsViewModel">
+      <views:ReportsView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:AuditLogViewModel">
+      <views:AuditLogView/>
+    </DataTemplate>
+    <DataTemplate DataType="vm:AdminViewModel">
+      <views:AdminView/>
+    </DataTemplate>
+  </Application.DataTemplates>
+</Application>

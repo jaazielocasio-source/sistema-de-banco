@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BankSystem.UI.Views.TransferDialog"
+        Width="420" Height="320"
+        Title="Transferencia">
+  <StackPanel Margin="16" Spacing="8">
+    <TextBlock Text="Transferir fondos" FontSize="18" FontWeight="Bold"/>
+    <TextBlock Text="Origen"/>
+    <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding SourceAccount}"/>
+    <TextBlock Text="Destino"/>
+    <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding DestinationAccount}" IsEditable="True"/>
+    <TextBlock Text="Monto"/>
+    <NumericUpDown Minimum="0" Maximum="1000000" Value="{Binding Amount}"/>
+    <TextBlock Text="{Binding Estimate}" Foreground="Gray"/>
+    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+      <Button Content="Cancelar" Command="{Binding CancelCommand}"/>
+      <Button Content="Transferir" Command="{Binding ConfirmCommand}"/>
+    </StackPanel>
+    <TextBlock Text="{Binding Status}" Foreground="Green"/>
+  </StackPanel>
+</Window>

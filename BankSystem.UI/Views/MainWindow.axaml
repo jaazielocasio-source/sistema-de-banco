@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:BankSystem.UI.ViewModels"
+        x:Class="BankSystem.UI.Views.MainWindow"
+        mc:Ignorable="d"
+        Width="1100" Height="720"
+        Title="BankSystem UI">
+  <Grid ColumnDefinitions="220, *">
+    <Border Background="{StaticResource SidebarBackground}">
+      <StackPanel Margin="0" Spacing="4">
+        <TextBlock Text="BankSystem" Foreground="{StaticResource SidebarForeground}" FontSize="20" FontWeight="Bold" Margin="12 16"/>
+        <Button Classes="sidebar" Content="Dashboard" Command="{Binding NavigateDashboardCommand}"/>
+        <Button Classes="sidebar" Content="Cuentas" Command="{Binding NavigateAccountsCommand}"/>
+        <Button Classes="sidebar" Content="Préstamos" Command="{Binding NavigateLoansCommand}"/>
+        <Button Classes="sidebar" Content="Transferencias" Command="{Binding NavigateTransferCommand}"/>
+        <Button Classes="sidebar" Content="AutoPay" Command="{Binding NavigateAutoPayCommand}"/>
+        <Button Classes="sidebar" Content="Reportes" Command="{Binding NavigateReportsCommand}"/>
+        <Button Classes="sidebar" Content="Auditoría" Command="{Binding NavigateAuditCommand}"/>
+        <Button Classes="sidebar" Content="Admin" Command="{Binding NavigateAdminCommand}"/>
+      </StackPanel>
+    </Border>
+
+    <Border Grid.Column="1" Padding="{StaticResource PageMargin}">
+      <ContentControl Content="{Binding CurrentView}"/>
+    </Border>
+  </Grid>
+</Window>

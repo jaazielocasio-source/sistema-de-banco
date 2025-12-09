@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="BankSystem.UI.Views.AutoPayWizard">
+  <StackPanel Spacing="8">
+    <TextBlock Text="Nuevo pago automático" FontSize="20" FontWeight="Bold"/>
+    <TextBlock Text="Cuenta origen"/>
+    <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding SourceAccount}"/>
+    <TextBlock Text="Destino (Cuenta o LoanId)"/>
+    <TextBox Text="{Binding DestinationId}"/>
+    <TextBlock Text="Nombre"/>
+    <TextBox Text="{Binding Name}"/>
+    <TextBlock Text="Memo"/>
+    <TextBox Text="{Binding Memo}"/>
+    <StackPanel Orientation="Horizontal" Spacing="8">
+      <TextBlock Text="Monto"/>
+      <NumericUpDown Minimum="0" Maximum="1000000" Value="{Binding Amount}"/>
+      <TextBlock Text="Periodicidad"/>
+      <ComboBox ItemsSource="{Binding PeriodicityOptions}" SelectedItem="{Binding Periodicity}" Width="120"/>
+      <TextBlock Text="Día del mes"/>
+      <NumericUpDown Minimum="1" Maximum="28" Value="{Binding DayOfMonth}"/>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Spacing="8">
+      <TextBlock Text="Inicio"/>
+      <DatePicker SelectedDate="{Binding StartDate}"/>
+      <TextBlock Text="Fin"/>
+      <DatePicker SelectedDate="{Binding EndDate}"/>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Spacing="8">
+      <TextBlock Text="Reintentos"/>
+      <NumericUpDown Minimum="0" Maximum="10" Value="{Binding MaxRetries}"/>
+      <TextBlock Text="Cada (días)"/>
+      <NumericUpDown Minimum="1" Maximum="30" Value="{Binding RetryEveryDays}"/>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Spacing="8">
+      <Button Content="Guardar" Command="{Binding SaveCommand}" Width="140"/>
+      <TextBlock Text="{Binding Status}" Margin="12 0"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>
