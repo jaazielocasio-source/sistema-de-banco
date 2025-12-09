@@ -1,21 +1,206 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="BankSystem.UI.Views.TransferDialog"
-        Width="420" Height="320"
-        Title="Transferencia">
-  <StackPanel Margin="16" Spacing="8">
-    <TextBlock Text="Transferir fondos" FontSize="18" FontWeight="Bold"/>
-    <TextBlock Text="Origen"/>
-    <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding SourceAccount}"/>
-    <TextBlock Text="Destino"/>
-    <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding DestinationAccount}" IsEditable="True"/>
-    <TextBlock Text="Monto"/>
-    <NumericUpDown Minimum="0" Maximum="1000000" Value="{Binding Amount}"/>
-    <TextBlock Text="{Binding Estimate}" Foreground="Gray"/>
-    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
-      <Button Content="Cancelar" Command="{Binding CancelCommand}"/>
-      <Button Content="Transferir" Command="{Binding ConfirmCommand}"/>
-    </StackPanel>
-    <TextBlock Text="{Binding Status}" Foreground="Green"/>
-  </StackPanel>
+        Width="600" Height="550"
+        MinWidth="550" MinHeight="500"
+        Title="💸 Transferir Fondos"
+        WindowStartupLocation="CenterOwner"
+        CanResize="true"
+        SystemDecorations="Full"
+        ExtendClientAreaToDecorationsHint="false"
+        ShowInTaskbar="true">
+  <Border Background="{StaticResource BackgroundColor}" Padding="24">
+    <Grid RowDefinitions="Auto,*,Auto">
+      <!-- Header compacto -->
+      <Border Grid.Row="0"
+              Padding="20,16"
+              CornerRadius="12"
+              Margin="0,0,0,16"
+              BoxShadow="0 2 8 0 #22000000">
+        <Border.Background>
+          <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
+            <GradientStop Color="#FF6600" Offset="0"/>
+            <GradientStop Color="#FF8833" Offset="1"/>
+          </LinearGradientBrush>
+        </Border.Background>
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <TextBlock Text="💸" FontSize="28" VerticalAlignment="Center"/>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Transferir Fondos" 
+                       FontSize="20" 
+                       FontWeight="Bold"
+                       Foreground="White"/>
+            <TextBlock Text="Rápido y seguro" 
+                       FontSize="12" 
+                       Foreground="#FFE5CC"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- Formulario compacto -->
+      <Border Grid.Row="1" Classes="card" Padding="20">
+        <StackPanel Spacing="16">
+          
+          <!-- De/Para en una fila -->
+          <Grid ColumnDefinitions="*,24,*" RowDefinitions="Auto,Auto">
+            <!-- Cuenta Origen -->
+            <StackPanel Grid.Column="0" Spacing="8">
+              <TextBlock Text="💰 De" FontWeight="SemiBold" FontSize="14" Foreground="#64748B"/>
+              <ComboBox ItemsSource="{Binding Accounts}" 
+                        SelectedItem="{Binding SourceAccount}"
+                        Height="42"
+                        CornerRadius="8"
+                        FontSize="14"
+                        PlaceholderText="Cuenta origen"
+                        HorizontalAlignment="Stretch"/>
+            </StackPanel>
+
+            <!-- Flecha -->
+            <TextBlock Grid.Column="1" 
+                       Text="→" 
+                       FontSize="24"
+                       Foreground="#FF6600"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,0,8"/>
+
+            <!-- Cuenta Destino -->
+            <StackPanel Grid.Column="2" Spacing="8">
+              <TextBlock Text="🎯 Para" FontWeight="SemiBold" FontSize="14" Foreground="#64748B"/>
+              <ComboBox ItemsSource="{Binding Accounts}" 
+                        SelectedItem="{Binding DestinationAccount}"
+                        Height="42"
+                        CornerRadius="8"
+                        FontSize="14"
+                        PlaceholderText="Cuenta destino"
+                        HorizontalAlignment="Stretch"/>
+            </StackPanel>
+            
+            <!-- Saldos debajo -->
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="{Binding SourceAccount.Balance, StringFormat='Saldo: {0:C2}'}" 
+                       FontSize="12"
+                       Foreground="#10B981"
+                       Margin="0,4,0,0"
+                       IsVisible="{Binding SourceAccount, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+            
+            <TextBlock Grid.Row="1" Grid.Column="2"
+                       Text="{Binding DestinationAccount.Balance, StringFormat='Saldo: {0:C2}'}" 
+                       FontSize="12"
+                       Foreground="#64748B"
+                       Margin="0,4,0,0"
+                       IsVisible="{Binding DestinationAccount, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+          </Grid>
+
+          <!-- Divisor -->
+          <Border Height="1" Background="#E2E8F0" Margin="0,8"/>
+
+          <!-- Monto -->
+          <StackPanel Spacing="8">
+            <TextBlock Text="💵 Monto" FontWeight="SemiBold" FontSize="14" Foreground="#64748B"/>
+            <NumericUpDown Minimum="0.01" 
+                           Maximum="1000000" 
+                           Value="{Binding Amount}"
+                           Height="42"
+                           CornerRadius="8"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           FormatString="C2"
+                           Increment="10"/>
+          </StackPanel>
+
+          <!-- Estimación compacta -->
+          <Border Padding="12" 
+                  CornerRadius="8"
+                  Background="#FEF3C7"
+                  BorderBrush="#F59E0B"
+                  BorderThickness="1"
+                  IsVisible="{Binding Estimate, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <TextBlock Text="💡" FontSize="16"/>
+              <TextBlock Text="{Binding Estimate}" 
+                         FontSize="13" 
+                         Foreground="#92400E"
+                         VerticalAlignment="Center"
+                         TextWrapping="Wrap"/>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+
+      
+      <!-- Status y Botones -->
+      <StackPanel Grid.Row="2" Spacing="12">
+        <!-- Status Message compacto -->
+        <Border Background="#ECFDF5" 
+                Padding="12" 
+                CornerRadius="8"
+                BorderBrush="#10B981"
+                BorderThickness="1"
+                IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBlock Text="✅" FontSize="16"/>
+            <TextBlock Text="{Binding Status}" 
+                       FontSize="13" 
+                       Foreground="#10B981"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Botones compactos -->
+        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+          <Button Grid.Column="0" 
+                  Content="❌ Cerrar" 
+                  Command="{Binding CancelCommand}"
+                  Height="44"
+                  FontSize="14"
+                  CornerRadius="8"
+                  Background="#E5E7EB"
+                  Foreground="#374151"
+                  FontWeight="SemiBold"
+                  BorderThickness="0">
+            <Button.Styles>
+              <Style Selector="Button:pointerover">
+                <Setter Property="Background" Value="#D1D5DB"/>
+              </Style>
+            </Button.Styles>
+          </Button>
+          <Button Grid.Column="1" 
+                  Content="🔄 Limpiar" 
+                  Command="{Binding ClearCommand}"
+                  Height="44"
+                  FontSize="14"
+                  CornerRadius="8"
+                  Background="#FEF3C7"
+                  Foreground="#92400E"
+                  FontWeight="SemiBold"
+                  BorderThickness="0">
+            <Button.Styles>
+              <Style Selector="Button:pointerover">
+                <Setter Property="Background" Value="#FDE68A"/>
+              </Style>
+            </Button.Styles>
+          </Button>
+          <Button Grid.Column="2" 
+                  Content="✅ Transferir" 
+                  Command="{Binding ConfirmCommand}"
+                  Height="44"
+                  FontSize="14"
+                  CornerRadius="8"
+                  Background="#FF6600"
+                  Foreground="White"
+                  FontWeight="Bold"
+                  BorderThickness="0">
+            <Button.Styles>
+              <Style Selector="Button:pointerover">
+                <Setter Property="Background" Value="#FF7722"/>
+              </Style>
+            </Button.Styles>
+          </Button>
+        </Grid>
+      </StackPanel>
+    </Grid>
+  </Border>
 </Window>

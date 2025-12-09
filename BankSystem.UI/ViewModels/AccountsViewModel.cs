@@ -10,16 +10,32 @@ using System.Threading.Tasks;
 
 namespace BankSystem.UI.ViewModels;
 
+/// <summary>
+/// ViewModel para gestión de cuentas bancarias
+/// Permite crear cuentas, depositar, retirar, transferir y cambiar estados
+/// </summary>
 public partial class AccountsViewModel : ObservableObject
 {
+    // Servicios de negocio
     private readonly BankService _bank;
     private readonly DialogService _dialogs;
 
+    // Colección observable de todas las cuentas
     public ObservableCollection<AccountItem> Accounts { get; } = new();
 
+    // Cuenta seleccionada para operaciones
     [ObservableProperty] private AccountItem? _selectedAccount;
+    
+    // Monto para operaciones de depósito/retiro
     [ObservableProperty] private decimal _amount = 100;
+    
+    // Mensaje de estado de operaciones
     [ObservableProperty] private string? _status;
+    
+    // Campos para crear nueva cuenta
+    [ObservableProperty] private int _newCustomerId = 1;
+    [ObservableProperty] private int _newAccountTypeIndex = 0; // 0=Ahorro, 1=Corriente, 2=CD
+    [ObservableProperty] private int _newCurrencyIndex = 0; // 0=USD, 1=EUR, 2=GBP
 
     public AccountsViewModel(BankService bank, DialogService dialogs)
     {
@@ -62,16 +78,33 @@ public partial class AccountsViewModel : ObservableObject
 
     private bool HasAccount() => SelectedAccount != null && Amount > 0;
 
-    [RelayCommand(CanExecute = nameof(HasAccount))]
+    [RelayCommand]
     private async Task DepositAsync()
     {
         try
         {
-            if (SelectedAccount == null) return;
-            var ok = _bank.Deposit(SelectedAccount.Number, Amount);
-            Status = ok ? "✅ Depósito exitoso" : "❌ Depósito falló";
-            if (!ok) await _dialogs.ShowErrorAsync("No se pudo depositar.");
-            Refresh();
+            if (_bank.Accounts == null || _bank.Accounts.Count == 0)
+            {
+                await _dialogs.ShowErrorAsync("No tienes cuentas disponibles.\n\nCrea una cuenta primero.");
+                return;
+            }
+
+            var account = await _dialogs.ShowAccountSelectorAsync("💰 Depositar - Selecciona la cuenta", _bank.Accounts);
+            
+            if (account != null)
+            {
+                var ok = _bank.Deposit(account.Number, Amount);
+                Status = ok ? $"✅ Depósito de {Amount:C} exitoso en {account.Number}" : "❌ Depósito falló";
+                if (!ok) 
+                {
+                    await _dialogs.ShowErrorAsync("No se pudo depositar.");
+                }
+                else
+                {
+                    await _dialogs.ShowMessageAsync("✅ Depósito Exitoso", $"Se depositaron {Amount:C} en la cuenta {account.Number}");
+                }
+                Refresh();
+            }
         }
         catch (Exception ex)
         {
@@ -159,6 +192,51 @@ public partial class AccountsViewModel : ObservableObject
         {
             Status = $"❌ Error: {ex.Message}";
             await _dialogs.ShowErrorAsync($"Error al activar: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private async Task CreateAccountAsync()
+    {
+        try
+        {
+            if (NewCustomerId <= 0)
+            {
+                await _dialogs.ShowErrorAsync("❌ ID de cliente inválido.\n\nDebe ser mayor a 0.");
+                return;
+            }
+
+            // Convertir índices a valores
+            var accountType = (NewAccountTypeIndex + 1).ToString(); // 0->1, 1->2, 2->3
+            var currencies = new[] { "USD", "EUR", "GBP" };
+            var currency = currencies[NewCurrencyIndex];
+
+            var account = _bank.CreateAccount(NewCustomerId, accountType, currency);
+            if (account == null)
+            {
+                await _dialogs.ShowErrorAsync("❌ No se pudo crear la cuenta.\n\nVerifica el tipo de cuenta seleccionado.");
+                return;
+            }
+
+            var accountTypeNames = new[] { "Ahorro", "Corriente", "Certificado de Depósito" };
+            var accountTypeName = accountTypeNames[NewAccountTypeIndex];
+            Status = $"✅ Cuenta {accountTypeName} creada: {account.Number}";
+            
+            await _dialogs.ShowMessageAsync(
+                "✅ Cuenta Creada",
+                $"Se ha creado exitosamente una cuenta de {accountTypeName}:\n\n" +
+                $"📇 Número: {account.Number}\n" +
+                $"💰 Saldo inicial: {account.Balance:C}\n" +
+                $"💵 Moneda: {account.Currency}\n\n" +
+                $"La cuenta ya está visible en la lista de tarjetas."
+            );
+            
+            Refresh();
+        }
+        catch (Exception ex)
+        {
+            Status = $"❌ Error: {ex.Message}";
+            await _dialogs.ShowErrorAsync($"Error al crear cuenta: {ex.Message}");
         }
     }
 }

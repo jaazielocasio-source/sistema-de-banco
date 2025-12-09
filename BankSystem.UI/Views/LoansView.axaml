@@ -2,48 +2,228 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
              x:Class="BankSystem.UI.Views.LoansView">
-  <Grid ColumnDefinitions="2*,3*">
-    <StackPanel Spacing="8" Margin="0 0 12 0">
-      <TextBlock Text="Préstamos" FontSize="20" FontWeight="Bold"/>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="Cliente Id"/>
-        <NumericUpDown Minimum="1" Maximum="999999" Value="{Binding CustomerId}"/>
-      </StackPanel>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="Tipo"/>
-        <ComboBox SelectedValue="{Binding LoanType}" SelectedValueBinding="{Binding Tag}">
-          <ComboBoxItem Content="1 Personal" Tag="1"/>
-          <ComboBoxItem Content="2 Hipotecario" Tag="2"/>
-          <ComboBoxItem Content="3 Auto" Tag="3"/>
-        </ComboBox>
-      </StackPanel>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="Principal"/>
-        <NumericUpDown Minimum="0" Maximum="10000000" Value="{Binding Principal}"/>
-      </StackPanel>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="Meses"/>
-        <NumericUpDown Minimum="1" Maximum="360" Value="{Binding Months}"/>
-      </StackPanel>
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="Moneda"/>
-        <ComboBox SelectedValue="{Binding Currency}" SelectedValueBinding="{Binding Tag}">
-          <ComboBoxItem Content="USD" Tag="USD"/>
-          <ComboBoxItem Content="EUR" Tag="EUR"/>
-          <ComboBoxItem Content="JPY" Tag="JPY"/>
-          <ComboBoxItem Content="KRW" Tag="KRW"/>
-          <ComboBoxItem Content="BOB" Tag="BOB"/>
-          <ComboBoxItem Content="GBP" Tag="GBP"/>
-        </ComboBox>
-      </StackPanel>
-      <Button Content="Crear préstamo" Command="{Binding CreateLoanCommand}" Width="180"/>
-      <TextBlock Text="{Binding Installment, StringFormat='Cuota: {0:F2}'}"/>
-      <controls:DataGrid ItemsSource="{Binding Loans}" AutoGenerateColumns="True" SelectedItem="{Binding SelectedLoan}" Height="220"/>
-    </StackPanel>
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="0" Background="#F5F7FA">
+      
+      <!-- Header con fondo azul -->
+      <Border Background="#002855" Padding="24,24,24,32" CornerRadius="0,0,24,24">
+        <StackPanel Spacing="16">
+          <StackPanel Spacing="8">
+            <TextBlock Text="🏦 PRÉSTAMOS" 
+                       FontSize="13" 
+                       FontWeight="Bold" 
+                       Foreground="#FF6600"
+                       LetterSpacing="1"/>
+            <TextBlock Text="Solicita y gestiona tus préstamos" 
+                       FontSize="16" 
+                       FontWeight="SemiBold" 
+                       Foreground="White"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
 
-    <StackPanel Spacing="6">
-      <TextBlock Text="Tabla de amortización" FontWeight="Bold"/>
-      <controls:DataGrid ItemsSource="{Binding Amortization}" AutoGenerateColumns="True" Height="380"/>
+      <StackPanel Spacing="16" Margin="24,-20,24,24">
+        
+        <!-- Formulario de nuevo préstamo -->
+        <Border Background="White" 
+                CornerRadius="16" 
+                Padding="24"
+                BoxShadow="0 2 12 0 #11000000">
+          <StackPanel Spacing="20">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <Border Background="#FFE5CC" CornerRadius="8" Width="40" Height="40" Padding="8">
+                <TextBlock Text="➕" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Nuevo Préstamo" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+                <TextBlock Text="Completa los datos para solicitar" FontSize="12" Foreground="#64748B"/>
+              </StackPanel>
+            </StackPanel>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="16" RowSpacing="16">
+              
+              <!-- Cliente ID -->
+              <StackPanel Grid.Column="0" Grid.Row="0" Spacing="8">
+                <TextBlock Text="👤 ID del Cliente" FontWeight="SemiBold" FontSize="13" Foreground="#64748B"/>
+                <NumericUpDown Minimum="1" 
+                               Maximum="999999" 
+                               Value="{Binding CustomerId}"
+                               Height="40"
+                               CornerRadius="8"
+                               FontSize="14"/>
+              </StackPanel>
+
+              <!-- Tipo de préstamo -->
+              <StackPanel Grid.Column="1" Grid.Row="0" Spacing="8">
+                <TextBlock Text="📋 Tipo de Préstamo" FontWeight="SemiBold" FontSize="13" Foreground="#64748B"/>
+                <ComboBox SelectedValue="{Binding LoanType}" 
+                          SelectedValueBinding="{Binding Tag}"
+                          Height="40"
+                          CornerRadius="8"
+                          FontSize="14"
+                          HorizontalAlignment="Stretch">
+                  <ComboBoxItem Content="💼 Personal" Tag="1"/>
+                  <ComboBoxItem Content="🏠 Hipotecario" Tag="2"/>
+                  <ComboBoxItem Content="🚗 Auto" Tag="3"/>
+                </ComboBox>
+              </StackPanel>
+
+              <!-- Monto Principal -->
+              <StackPanel Grid.Column="0" Grid.Row="1" Spacing="8">
+                <TextBlock Text="💰 Monto Principal" FontWeight="SemiBold" FontSize="13" Foreground="#64748B"/>
+                <NumericUpDown Minimum="0" 
+                               Maximum="10000000" 
+                               Value="{Binding Principal}"
+                               Height="40"
+                               CornerRadius="8"
+                               FontSize="14"
+                               FormatString="C2"/>
+              </StackPanel>
+
+              <!-- Plazo en meses -->
+              <StackPanel Grid.Column="1" Grid.Row="1" Spacing="8">
+                <TextBlock Text="📅 Plazo (Meses)" FontWeight="SemiBold" FontSize="13" Foreground="#64748B"/>
+                <NumericUpDown Minimum="1" 
+                               Maximum="360" 
+                               Value="{Binding Months}"
+                               Height="40"
+                               CornerRadius="8"
+                               FontSize="14"/>
+              </StackPanel>
+
+              <!-- Moneda -->
+              <StackPanel Grid.Column="0" Grid.Row="2" Spacing="8">
+                <TextBlock Text="💱 Moneda" FontWeight="SemiBold" FontSize="13" Foreground="#64748B"/>
+                <ComboBox SelectedValue="{Binding Currency}" 
+                          SelectedValueBinding="{Binding Tag}"
+                          Height="40"
+                          CornerRadius="8"
+                          FontSize="14"
+                          HorizontalAlignment="Stretch">
+                  <ComboBoxItem Content="🇺🇸 USD - Dólar" Tag="USD"/>
+                  <ComboBoxItem Content="🇪🇺 EUR - Euro" Tag="EUR"/>
+                  <ComboBoxItem Content="🇯🇵 JPY - Yen" Tag="JPY"/>
+                  <ComboBoxItem Content="🇰🇷 KRW - Won" Tag="KRW"/>
+                  <ComboBoxItem Content="🇧🇴 BOB - Boliviano" Tag="BOB"/>
+                  <ComboBoxItem Content="🇬🇧 GBP - Libra" Tag="GBP"/>
+                </ComboBox>
+              </StackPanel>
+
+              <!-- Cuota mensual estimada -->
+              <Border Grid.Column="1" Grid.Row="2" 
+                      Background="#FEF3C7" 
+                      CornerRadius="8" 
+                      Padding="12"
+                      VerticalAlignment="Bottom">
+                <StackPanel Spacing="4">
+                  <TextBlock Text="💡 Cuota mensual estimada" FontSize="11" Foreground="#92400E" FontWeight="SemiBold"/>
+                  <TextBlock Text="{Binding Installment, StringFormat='{}{0:C2}'}" 
+                             FontSize="18" 
+                             FontWeight="Bold" 
+                             Foreground="#78350F"/>
+                </StackPanel>
+              </Border>
+
+              <!-- Botón de crear -->
+              <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3"
+                      Content="✅ Solicitar Préstamo" 
+                      Command="{Binding CreateLoanCommand}"
+                      Height="48"
+                      CornerRadius="10"
+                      Background="#FF6600"
+                      Foreground="White"
+                      FontSize="15"
+                      FontWeight="Bold"
+                      BorderThickness="0"
+                      HorizontalAlignment="Stretch">
+                <Button.Styles>
+                  <Style Selector="Button:pointerover">
+                    <Setter Property="Background" Value="#FF7722"/>
+                  </Style>
+                </Button.Styles>
+              </Button>
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <!-- Mis préstamos -->
+        <Border Background="White" 
+                CornerRadius="16" 
+                Padding="24"
+                BoxShadow="0 2 12 0 #11000000">
+          <StackPanel Spacing="16">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <Border Background="#E0E7FF" CornerRadius="8" Width="40" Height="40" Padding="8">
+                <TextBlock Text="📊" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+              <StackPanel VerticalAlignment="Center" Spacing="4">
+                <TextBlock Text="Mis Préstamos Activos" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+                <TextBlock Text="📌 Haz clic en un préstamo para ver su tabla de amortización abajo" 
+                           FontSize="12" 
+                           Foreground="#FF6600"
+                           FontWeight="SemiBold"/>
+              </StackPanel>
+            </StackPanel>
+
+            <Border BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8"
+                    Background="#F8FAFC"
+                    MinHeight="200">
+              <StackPanel>
+                <controls:DataGrid ItemsSource="{Binding Loans}" 
+                                   AutoGenerateColumns="True" 
+                                   SelectedItem="{Binding SelectedLoan}"
+                                   MinHeight="180"
+                                   Background="Transparent"
+                                   BorderThickness="0"
+                                   GridLinesVisibility="Horizontal"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+
+        <!-- Tabla de amortización (se muestra cuando seleccionas un préstamo) -->
+        <Border Background="White" 
+                CornerRadius="16" 
+                Padding="24"
+                BoxShadow="0 2 12 0 #11000000"
+                IsVisible="{Binding SelectedLoan, Converter={x:Static ObjectConverters.IsNotNull}}">
+          <StackPanel Spacing="16">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <Border Background="#DBEAFE" CornerRadius="8" Width="40" Height="40" Padding="8">
+                <TextBlock Text="📈" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+              <StackPanel VerticalAlignment="Center" Spacing="4">
+                <TextBlock Text="Tabla de Amortización del Préstamo Seleccionado" 
+                           FontSize="18" 
+                           FontWeight="Bold" 
+                           Foreground="#1E293B"/>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <TextBlock Text="💰 Cuota mensual:" FontSize="12" Foreground="#64748B"/>
+                  <TextBlock Text="{Binding Installment, StringFormat='{}{0:C2}'}" 
+                             FontSize="13" 
+                             FontWeight="Bold" 
+                             Foreground="#FF6600"/>
+                </StackPanel>
+              </StackPanel>
+            </StackPanel>
+
+            <Border BorderBrush="#E2E8F0" 
+                    BorderThickness="1" 
+                    CornerRadius="8"
+                    Background="#F8FAFC">
+              <controls:DataGrid ItemsSource="{Binding Amortization}" 
+                                 AutoGenerateColumns="True" 
+                                 Height="300"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 GridLinesVisibility="Horizontal"/>
+            </Border>
+          </StackPanel>
+        </Border>
+
+      </StackPanel>
     </StackPanel>
-  </Grid>
+  </ScrollViewer>
 </UserControl>

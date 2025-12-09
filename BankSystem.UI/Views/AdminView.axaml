@@ -82,27 +82,27 @@
       <StackPanel Spacing="16">
         <StackPanel Orientation="Horizontal" Spacing="12">
           <Border Background="#FEE2E2" CornerRadius="8" Width="40" Height="40" Padding="8">
-            <TextBlock Text="⚙️" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="🔒" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
           </Border>
           <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="Actualizar Estado de Cuenta" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
-            <TextBlock Text="Cambia el estado de una cuenta bancaria" FontSize="12" Foreground="#64748B"/>
+            <TextBlock Text="Activar / Desactivar Tarjeta" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+            <TextBlock Text="Selecciona una tarjeta visualmente para cambiar su estado" FontSize="12" Foreground="#64748B"/>
           </StackPanel>
         </StackPanel>
 
-        <Grid ColumnDefinitions="*,*">
-          <StackPanel Grid.Column="0" Spacing="8">
-            <TextBlock Text="Número de Cuenta" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
-            <TextBox Watermark="Ingresa el número de cuenta" Text="{Binding AccountNumberStatus}" Height="40"/>
-          </StackPanel>
+        <StackPanel Spacing="12">
+          <TextBlock Text="📌 Presiona el botón para ver tus tarjetas y elegir cuál activar o desactivar" 
+                     FontSize="13" 
+                     Foreground="#64748B" 
+                     FontStyle="Italic"/>
           
-          <StackPanel Grid.Column="1" Spacing="8">
+          <StackPanel Spacing="8">
             <TextBlock Text="Nuevo Estado" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
             <ComboBox ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding NewStatus}" Height="40" CornerRadius="8"/>
           </StackPanel>
-        </Grid>
+        </StackPanel>
         
-        <Button Classes="primary" Content="✅ Actualizar Estado" Command="{Binding SetStatusCommand}" HorizontalAlignment="Left" Padding="24,12"/>
+        <Button Classes="primary" Content="🔍 Elegir Tarjeta y Actualizar" Command="{Binding SetStatusCommand}" HorizontalAlignment="Left" Padding="24,12"/>
       </StackPanel>
     </Border>
 

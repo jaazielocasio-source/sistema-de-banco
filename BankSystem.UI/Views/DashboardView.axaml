@@ -1,89 +1,183 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="BankSystem.UI.Views.DashboardView">
-  <StackPanel Spacing="24">
-    <!-- Header -->
-    <StackPanel Spacing="8">
-      <TextBlock Text="Dashboard" FontSize="32" FontWeight="Bold" Foreground="#1E293B"/>
-      <TextBlock Text="Resumen de tus finanzas" FontSize="14" Foreground="#64748B"/>
-    </StackPanel>
-
-    <!-- Stats Cards -->
-    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto">
-      <!-- Total Balance Card -->
-      <Border Classes="card" Grid.Column="0" Margin="0,0,10,0">
-        <StackPanel Spacing="12">
-          <StackPanel Orientation="Horizontal" Spacing="12">
-            <Border Background="#FEF3C7" CornerRadius="8" Width="48" Height="48" Padding="10">
-              <TextBlock Text="💰" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Border>
-            <StackPanel VerticalAlignment="Center">
-              <TextBlock Text="Saldo Total" FontSize="12" Foreground="#64748B" FontWeight="Medium"/>
-              <TextBlock Text="{Binding TotalBalance, StringFormat='{}{0:C}'}" 
-                         FontSize="24" 
-                         FontWeight="Bold" 
-                         Foreground="#1E293B"/>
-            </StackPanel>
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="0" Background="#F5F7FA">
+      <!-- Card Section with Navy Blue Background -->
+      <Border Background="#002855" Padding="24,32,24,80" CornerRadius="0,0,32,32">
+        <StackPanel Spacing="20">
+          <!-- Header -->
+          <StackPanel Spacing="8">
+            <TextBlock Text="🏦 BANCO POPULAR" 
+                       FontSize="13" 
+                       FontWeight="Bold" 
+                       Foreground="#FF6600"
+                       LetterSpacing="1"/>
           </StackPanel>
-          <TextBlock Text="↑ +2.5% este mes" FontSize="11" Foreground="#10B981" FontWeight="Medium"/>
-        </StackPanel>
-      </Border>
-
-      <!-- Accounts Card -->
-      <Border Classes="card" Grid.Column="1" Margin="0,0,10,0">
-        <StackPanel Spacing="12">
-          <StackPanel Orientation="Horizontal" Spacing="12">
-            <Border Background="#DBEAFE" CornerRadius="8" Width="48" Height="48" Padding="10">
-              <TextBlock Text="🏦" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Border>
-            <StackPanel VerticalAlignment="Center">
-              <TextBlock Text="Total Cuentas" FontSize="12" Foreground="#64748B" FontWeight="Medium"/>
-              <TextBlock Text="{Binding AccountCount}" 
-                         FontSize="24" 
-                         FontWeight="Bold" 
-                         Foreground="#1E293B"/>
-            </StackPanel>
-          </StackPanel>
-          <TextBlock Text="Todas activas" FontSize="11" Foreground="#10B981" FontWeight="Medium"/>
-        </StackPanel>
-      </Border>
-
-      <!-- Quick Actions Card -->
-      <Border Classes="card" Grid.Column="2">
-        <StackPanel Spacing="12">
-          <TextBlock Text="Acciones Rápidas" FontSize="14" FontWeight="Bold" Foreground="#1E293B"/>
-          <Button Classes="primary" Content="💸 Nueva Transferencia" HorizontalAlignment="Stretch"/>
-          <Button Classes="success" Content="➕ Nueva Cuenta" HorizontalAlignment="Stretch"/>
-        </StackPanel>
-      </Border>
-    </Grid>
-
-    <!-- Upcoming Payments Section -->
-    <Border Classes="card">
-      <StackPanel Spacing="16">
-        <StackPanel Orientation="Horizontal" Spacing="12">
-          <Border Background="#FEE2E2" CornerRadius="8" Width="40" Height="40" Padding="8">
-            <TextBlock Text="⚡" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+          
+          <!-- Bank Card -->
+          <Border Background="#003366" 
+                  CornerRadius="16" 
+                  Padding="24"
+                  Height="180"
+                  BoxShadow="0 8 24 0 #33000000">
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
+              <!-- Header con tipo de cuenta -->
+              <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="{Binding AccountType}" 
+                           FontSize="14" 
+                           FontWeight="Bold" 
+                           Foreground="#B0C4DE"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="ATH" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="White"
+                           HorizontalAlignment="Right"
+                           Margin="120,0,0,0"/>
+              </StackPanel>
+              
+              <!-- Número de cuenta -->
+              <TextBlock Grid.Row="1"
+                         Text="{Binding AccountNumber}" 
+                         FontSize="12" 
+                         Foreground="#B0C4DE" 
+                         FontWeight="Medium"
+                         Margin="0,4,0,0"
+                         Opacity="0.8"/>
+              
+              <!-- Saldo -->
+              <StackPanel Grid.Row="2" VerticalAlignment="Center" Spacing="8">
+                <TextBlock Text="Saldo disponible" 
+                           FontSize="13" 
+                           Foreground="#B0C4DE" 
+                           FontWeight="Medium"/>
+                <TextBlock Text="{Binding TotalBalance, StringFormat='{}{0:C}'}" 
+                           FontSize="36" 
+                           FontWeight="Bold" 
+                           Foreground="White"/>
+              </StackPanel>
+              
+              <!-- Botón ver/cambiar tarjetas -->
+              <Button Grid.Row="3" 
+                      Background="Transparent"
+                      BorderThickness="0"
+                      HorizontalAlignment="Right"
+                      Padding="0"
+                      Cursor="Hand"
+                      Command="{Binding ViewCardsCommand}">
+                <TextBlock Text="Cambiar tarjeta →" 
+                           FontSize="12" 
+                           Foreground="#FF6600" 
+                           FontWeight="SemiBold"/>
+              </Button>
+            </Grid>
           </Border>
-          <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="Próximos Pagos Automáticos" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
-            <TextBlock Text="Gestiona tus pagos programados" FontSize="12" Foreground="#64748B"/>
-          </StackPanel>
         </StackPanel>
-        
-        <Border BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="12" Background="#F8FAFC">
-          <ListBox ItemsSource="{Binding UpcomingPayments}" 
-                   Background="Transparent"
-                   BorderThickness="0"/>
-        </Border>
-      </StackPanel>
-    </Border>
+      </Border>
 
-    <!-- Refresh Button -->
-    <Button Classes="primary" 
-            Content="🔄 Refrescar Dashboard" 
-            Command="{Binding RefreshCommand}" 
-            HorizontalAlignment="Left"
-            Padding="24,12"/>
-  </StackPanel>
+      
+      <!-- Quick Actions Menu - ATH Mobile Style -->
+      <Grid Margin="24,-60,24,24" RowDefinitions="Auto,Auto,Auto">
+        
+        <!-- First Row of Actions -->
+        <UniformGrid Grid.Row="0" Columns="2" Margin="0,0,0,20">
+          <!-- Enviar dinero -->
+          <StackPanel Spacing="12" HorizontalAlignment="Center">
+            <Button Width="64" 
+                    Height="64" 
+                    CornerRadius="32" 
+                    Background="#FF6600"
+                    BorderThickness="0"
+                    Padding="0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Command="{Binding SendMoneyCommand}">
+              <Button.Styles>
+                <Style Selector="Button:pointerover">
+                  <Setter Property="Background" Value="#FF7722"/>
+                </Style>
+              </Button.Styles>
+              <TextBlock Text="💸" FontSize="28" Foreground="White"/>
+            </Button>
+            <TextBlock Text="Enviar dinero" 
+                       FontSize="12" 
+                       Foreground="#1E293B"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="80"
+                       FontWeight="Medium"/>
+          </StackPanel>
+
+          <!-- Transferir -->
+          <StackPanel Spacing="12" HorizontalAlignment="Center">
+            <Button Width="64" 
+                    Height="64" 
+                    CornerRadius="32" 
+                    Background="#FF6600"
+                    BorderThickness="0"
+                    Padding="0"
+                    Command="{Binding TransferCommand}">
+              <Button.Styles>
+                <Style Selector="Button:pointerover">
+                  <Setter Property="Background" Value="#FF7722"/>
+                </Style>
+              </Button.Styles>
+              <TextBlock Text="💳" FontSize="28" Foreground="White"/>
+            </Button>
+            <TextBlock Text="Transferir" 
+                       FontSize="12" 
+                       Foreground="#1E293B"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       MaxWidth="80"
+                       FontWeight="Medium"/>
+          </StackPanel>
+        </UniformGrid>
+
+        <!-- Activity Summary -->
+        <Border Grid.Row="1" 
+                Background="White" 
+                CornerRadius="16" 
+                Padding="20"
+                Margin="0,0,0,16"
+                BoxShadow="0 2 8 0 #11000000">
+          <StackPanel Spacing="16">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <Border Background="#FFE5CC" 
+                      CornerRadius="8" 
+                      Width="40" 
+                      Height="40" 
+                      Padding="8">
+                <TextBlock Text="📊" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Total de Cuentas" FontSize="14" Foreground="#64748B" FontWeight="Medium"/>
+                <TextBlock Text="{Binding AccountCount}" FontSize="24" FontWeight="Bold" Foreground="#1E293B"/>
+              </StackPanel>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <!-- Quick Links -->
+        <StackPanel Grid.Row="2" Spacing="12">
+          <Border Background="White"
+                  CornerRadius="12"
+                  Padding="20,16"
+                  BoxShadow="0 2 8 0 #11000000">
+            <StackPanel Orientation="Horizontal" Spacing="16">
+              <Border Background="#FFE5CC" CornerRadius="8" Width="36" Height="36" Padding="6">
+                <TextBlock Text="📱" FontSize="18"/>
+              </Border>
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="Actividad reciente" FontSize="15" FontWeight="SemiBold" Foreground="#1E293B"/>
+                <TextBlock Text="Ver tus últimas transacciones" FontSize="12" Foreground="#64748B"/>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Grid>
+
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

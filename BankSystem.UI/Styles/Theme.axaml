@@ -1,23 +1,23 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Styles.Resources>
-    <FontFamily x:Key="AppFont">Segoe UI, Helvetica Neue, Arial</FontFamily>
+    <FontFamily x:Key="AppFont">Segoe UI, -apple-system, BlinkMacSystemFont, Arial, sans-serif</FontFamily>
     <Thickness x:Key="PageMargin">24</Thickness>
     
-    <!-- Discovery-inspired Colors -->
-    <SolidColorBrush x:Key="SidebarBackground" Color="#1A1D2E"/>
-    <SolidColorBrush x:Key="SidebarForeground" Color="#F8FAFC"/>
-    <SolidColorBrush x:Key="AccentBrush" Color="#FF6B35"/>
-    <SolidColorBrush x:Key="AccentHover" Color="#FF8555"/>
+    <!-- ATH Mobile Colors -->
+    <SolidColorBrush x:Key="SidebarBackground" Color="#002855"/>
+    <SolidColorBrush x:Key="SidebarForeground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#FF6600"/>
+    <SolidColorBrush x:Key="AccentHover" Color="#FF7722"/>
     <SolidColorBrush x:Key="CardBackground" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="CardShadow" Color="#10000000"/>
-    <SolidColorBrush x:Key="PrimaryGradientStart" Color="#FF6B35"/>
-    <SolidColorBrush x:Key="PrimaryGradientEnd" Color="#F7931E"/>
+    <SolidColorBrush x:Key="PrimaryGradientStart" Color="#FF6600"/>
+    <SolidColorBrush x:Key="PrimaryGradientEnd" Color="#FF8833"/>
     <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
-    <SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+    <SolidColorBrush x:Key="WarningColor" Color="#FF6600"/>
     <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
-    <SolidColorBrush x:Key="InfoColor" Color="#3B82F6"/>
-    <SolidColorBrush x:Key="BackgroundColor" Color="#F1F5F9"/>
+    <SolidColorBrush x:Key="InfoColor" Color="#002855"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#F5F7FA"/>
   </Styles.Resources>
 
   <!-- Sidebar Button Style -->

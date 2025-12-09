@@ -1,13 +1,139 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="BankSystem.UI.Views.AuditLogView">
-  <StackPanel Spacing="8">
-    <TextBlock Text="Auditoría" FontSize="20" FontWeight="Bold"/>
-    <StackPanel Orientation="Horizontal" Spacing="8">
-      <TextBlock Text="Filtro"/>
-      <TextBox Width="200" Text="{Binding Filter}"/>
-      <Button Content="Refrescar" Command="{Binding RefreshCommand}"/>
+  
+  <ScrollViewer>
+    <StackPanel Margin="32" Spacing="24">
+      
+      <!-- Header con estilo ATH Móvil -->
+      <Border Background="#002855" 
+              CornerRadius="16" 
+              Padding="32,24"
+              BoxShadow="0 4 16 0 #22000000">
+        <StackPanel Spacing="8">
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <Border Background="#FF6600" 
+                    CornerRadius="12" 
+                    Width="48" 
+                    Height="48" 
+                    Padding="10">
+              <TextBlock Text="🔍" 
+                         FontSize="24" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel VerticalAlignment="Center" Spacing="4">
+              <TextBlock Text="Registro de Auditoría" 
+                         FontSize="24" 
+                         FontWeight="Bold" 
+                         Foreground="White"/>
+              <TextBlock Text="Historial completo de operaciones del sistema" 
+                         FontSize="13" 
+                         Foreground="#94A3B8"/>
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- Búsqueda y filtros -->
+      <Border Background="White" 
+              CornerRadius="16" 
+              Padding="24"
+              BoxShadow="0 2 12 0 #11000000">
+        <StackPanel Spacing="16">
+          <TextBlock Text="🔎 Buscar eventos" 
+                     FontSize="16" 
+                     FontWeight="SemiBold" 
+                     Foreground="#1E293B"/>
+          
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     Text="{Binding Filter}" 
+                     Watermark="Buscar por tipo de evento, cuenta, usuario..."
+                     Height="42"
+                     CornerRadius="8"
+                     BorderBrush="#E2E8F0"
+                     Padding="12,0"
+                     FontSize="14"/>
+            
+            <Button Grid.Column="1"
+                    Command="{Binding RefreshCommand}"
+                    Height="42"
+                    Margin="12,0,0,0"
+                    Padding="20,0"
+                    CornerRadius="8"
+                    Background="#FF6600"
+                    Foreground="White"
+                    FontWeight="SemiBold"
+                    Content="🔄 Actualizar"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Tabla de eventos de auditoría -->
+      <Border Background="White" 
+              CornerRadius="16" 
+              Padding="24"
+              BoxShadow="0 2 12 0 #11000000">
+        <StackPanel Spacing="16">
+          
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <Border Background="#DBEAFE" CornerRadius="8" Width="40" Height="40" Padding="8">
+              <TextBlock Text="📋" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel VerticalAlignment="Center" Spacing="2">
+              <TextBlock Text="Eventos Registrados" 
+                         FontSize="18" 
+                         FontWeight="Bold" 
+                         Foreground="#1E293B"/>
+              <TextBlock Text="Todos los eventos están organizados cronológicamente" 
+                         FontSize="12" 
+                         Foreground="#64748B"/>
+            </StackPanel>
+          </StackPanel>
+
+          <!-- Contenedor del log con formato mejorado -->
+          <Border BorderBrush="#E2E8F0" 
+                  BorderThickness="1" 
+                  CornerRadius="8"
+                  Background="#F8FAFC"
+                  MinHeight="400">
+            <ScrollViewer MaxHeight="600" Padding="16">
+              <TextBox Text="{Binding LogContent}" 
+                       AcceptsReturn="True" 
+                       IsReadOnly="True" 
+                       TextWrapping="Wrap"
+                       FontFamily="Consolas, 'Courier New', monospace"
+                       FontSize="12"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       Foreground="#334155"
+                       Padding="8"/>
+            </ScrollViewer>
+          </Border>
+
+          <!-- Info adicional -->
+          <Border Background="#FEF3C7" 
+                  BorderBrush="#FCD34D" 
+                  BorderThickness="1" 
+                  CornerRadius="8" 
+                  Padding="12">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <TextBlock Text="💡" FontSize="16" VerticalAlignment="Center"/>
+              <TextBlock TextWrapping="Wrap" 
+                         FontSize="12" 
+                         Foreground="#92400E">
+                <Run Text="Los eventos de auditoría incluyen: "/>
+                <Run Text="LOGIN, TRANSFER, DEPOSIT, WITHDRAW, LOAN.CREATE, SCHEDULE.ADD" FontWeight="SemiBold"/>
+                <Run Text=" y más. Usa el filtro para buscar eventos específicos."/>
+              </TextBlock>
+            </StackPanel>
+          </Border>
+
+        </StackPanel>
+      </Border>
+
     </StackPanel>
-    <TextBox Text="{Binding LogContent}" AcceptsReturn="True" IsReadOnly="True" Height="420" TextWrapping="Wrap"/>
-  </StackPanel>
+  </ScrollViewer>
+  
 </UserControl>

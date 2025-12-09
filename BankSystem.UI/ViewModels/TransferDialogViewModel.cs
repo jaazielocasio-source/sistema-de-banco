@@ -67,16 +67,75 @@ public partial class TransferDialogViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanConfirm))]
     private async Task ConfirmAsync()
     {
-        if (string.IsNullOrWhiteSpace(SourceAccount) || string.IsNullOrWhiteSpace(DestinationAccount)) return;
-        var ok = _bank.Transfer(SourceAccount, DestinationAccount, Amount);
-        if (!ok)
+        try
         {
-            Status = "Falló la transferencia";
-            await _dialogs.ShowErrorAsync("Transferencia inválida o fondos insuficientes.");
-            return;
+            if (string.IsNullOrWhiteSpace(SourceAccount) || string.IsNullOrWhiteSpace(DestinationAccount)) 
+            {
+                await _dialogs.ShowErrorAsync("Por favor selecciona las cuentas de origen y destino.");
+                return;
+            }
+            
+            if (SourceAccount == DestinationAccount)
+            {
+                await _dialogs.ShowErrorAsync("No puedes transferir a la misma cuenta.");
+                return;
+            }
+            
+            var ok = _bank.Transfer(SourceAccount, DestinationAccount, Amount);
+            if (!ok)
+            {
+                Status = "❌ Falló la transferencia";
+                await _dialogs.ShowErrorAsync("Transferencia inválida o fondos insuficientes.");
+                return;
+            }
+            
+            // Transferencia exitosa - mostrar mensaje y limpiar el formulario
+            var transferAmount = Amount;
+            Status = $"✅ Transferencia de {transferAmount:C2} completada exitosamente. Puedes hacer otra transferencia.";
+            
+            // Limpiar el formulario para permitir una nueva transferencia
+            Amount = 100;
+            SourceAccount = null;
+            DestinationAccount = null;
+            Estimate = null;
+            
+            // Actualizar las cuentas disponibles
+            Accounts.Clear();
+            foreach (var acc in _bank.Accounts) Accounts.Add(acc.Number);
+            
+            // Limpiar el mensaje de estado después de 5 segundos
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                Status = null;
+            });
+            
+            // El diálogo permanece abierto para nuevas transferencias
+            // NO cerrar: CloseAction?.Invoke(true);
         }
-        Status = "Transferencia OK";
-        CloseAction?.Invoke(true);
+        catch (Exception ex)
+        {
+            Status = $"❌ Error: {ex.Message}";
+            await _dialogs.ShowErrorAsync($"Error al realizar la transferencia: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private void Clear()
+    {
+        // Limpiar formulario
+        Amount = 100;
+        SourceAccount = null;
+        DestinationAccount = null;
+        Estimate = null;
+        Status = "📝 Formulario limpiado. Listo para nueva transferencia.";
+        
+        // Limpiar mensaje después de 3 segundos
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(3000);
+            Status = null;
+        });
     }
 
     [RelayCommand]

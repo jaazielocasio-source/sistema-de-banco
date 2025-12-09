@@ -28,8 +28,13 @@
             <Border Classes="card" 
                     Width="340" 
                     Height="200" 
-                    Margin="0,0,20,20"
-                    Background="Linear(0%,0%,100%,100%,#FF6B35,#F7931E)">
+                    Margin="0,0,20,20">
+              <Border.Background>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                  <GradientStop Color="#FF6B35" Offset="0"/>
+                  <GradientStop Color="#F7931E" Offset="1"/>
+                </LinearGradientBrush>
+              </Border.Background>
               <Grid RowDefinitions="Auto,*,Auto">
                 <!-- Card Header -->
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
@@ -85,6 +90,56 @@
         </ItemsControl.ItemTemplate>
       </ItemsControl>
     </ScrollViewer>
+
+    <!-- Create Account Section -->
+    <Border Classes="card">
+      <StackPanel Spacing="16">
+        <TextBlock Text="➕ Crear Nueva Cuenta" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+        
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+          <StackPanel Grid.Column="0" Grid.Row="0">
+            <TextBlock Text="ID Cliente" FontSize="12" FontWeight="Medium" Foreground="#64748B" Margin="0,0,0,4"/>
+            <NumericUpDown Value="{Binding NewCustomerId}" 
+                           Minimum="1" 
+                           Maximum="999999"
+                           Height="42"
+                           CornerRadius="8"/>
+          </StackPanel>
+
+          <StackPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock Text="Tipo de Cuenta" FontSize="12" FontWeight="Medium" Foreground="#64748B" Margin="0,0,0,4"/>
+            <ComboBox SelectedIndex="{Binding NewAccountTypeIndex}"
+                      Height="42"
+                      CornerRadius="8"
+                      HorizontalAlignment="Stretch">
+              <ComboBoxItem Content="💰 Ahorro"/>
+              <ComboBoxItem Content="💳 Corriente"/>
+              <ComboBoxItem Content="📈 Certificado de Depósito"/>
+            </ComboBox>
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" Grid.Row="0">
+            <TextBlock Text="Moneda" FontSize="12" FontWeight="Medium" Foreground="#64748B" Margin="0,0,0,4"/>
+            <ComboBox SelectedIndex="{Binding NewCurrencyIndex}"
+                      Height="42"
+                      CornerRadius="8"
+                      HorizontalAlignment="Stretch">
+              <ComboBoxItem Content="🇺🇸 USD"/>
+              <ComboBoxItem Content="🇪🇺 EUR"/>
+              <ComboBoxItem Content="🇬🇧 GBP"/>
+            </ComboBox>
+          </StackPanel>
+
+          <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"
+                  Classes="primary"
+                  Content="✨ Crear Cuenta" 
+                  Command="{Binding CreateAccountCommand}"
+                  Height="48"
+                  FontSize="15"
+                  FontWeight="SemiBold"/>
+        </Grid>
+      </StackPanel>
+    </Border>
 
     <!-- Action Panel -->
     <Border Classes="card">

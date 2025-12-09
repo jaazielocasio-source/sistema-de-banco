@@ -21,6 +21,17 @@ public class BankService
     public IEnumerable<AccountBase> GetAccountsByCustomer(int id)=> Accounts.Where(a=>a.CustomerId==id);
     public IEnumerable<LoanBase> GetLoansByCustomer(int id)=> Loans.Where(l=>l.CustomerId==id);
 
+    public AccountBase? CreateAccount(int customerId, string tipo, string currency)
+    {
+        var account = AccountFactory.CreateAccount(customerId, tipo, currency);
+        if (account != null)
+        {
+            Accounts.Add(account);
+            AuditLogger.Log("ACCOUNT.CREATE", $"Cuenta {account.Number} tipo {tipo} creada para cliente {customerId}", account.Number);
+        }
+        return account;
+    }
+
     public bool SetAccountStatus(string number, AccountStatus status)
     { 
         var a=Accounts.FirstOrDefault(x=>x.Number==number); if(a==null) return false; 

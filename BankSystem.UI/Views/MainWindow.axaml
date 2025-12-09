@@ -6,8 +6,12 @@
         x:Class="BankSystem.UI.Views.MainWindow"
         mc:Ignorable="d"
         Width="1280" Height="800"
+        MinWidth="1024" MinHeight="600"
         Title="BankSystem - Banking Made Simple"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        CanResize="true"
+        SystemDecorations="Full"
+        ExtendClientAreaToDecorationsHint="false">
   
   <Grid ColumnDefinitions="260, *">
     <!-- Sidebar -->
@@ -30,7 +34,6 @@
         <Button Classes="sidebar" Content="📊 Dashboard" Command="{Binding NavigateDashboardCommand}"/>
         <Button Classes="sidebar" Content="💰 Cuentas" Command="{Binding NavigateAccountsCommand}"/>
         <Button Classes="sidebar" Content="🏦 Préstamos" Command="{Binding NavigateLoansCommand}"/>
-        <Button Classes="sidebar" Content="💸 Transferencias" Command="{Binding NavigateTransferCommand}"/>
         <Button Classes="sidebar" Content="⚡ AutoPay" Command="{Binding NavigateAutoPayCommand}"/>
         <Button Classes="sidebar" Content="📈 Reportes" Command="{Binding NavigateReportsCommand}"/>
         <Button Classes="sidebar" Content="📋 Auditoría" Command="{Binding NavigateAuditCommand}"/>

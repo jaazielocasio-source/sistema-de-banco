@@ -1,21 +1,188 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="BankSystem.UI.Views.ReportsView">
-  <StackPanel Spacing="8">
-    <TextBlock Text="Reportes y e-Statements" FontSize="20" FontWeight="Bold"/>
-    <StackPanel Orientation="Horizontal" Spacing="8">
-      <TextBlock Text="Cuenta"/>
-      <ComboBox ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" Width="180"/>
-      <TextBlock Text="Mes"/>
-      <NumericUpDown Minimum="1" Maximum="12" Value="{Binding Month}"/>
-      <TextBlock Text="Año"/>
-      <NumericUpDown Minimum="2000" Maximum="2100" Value="{Binding Year}"/>
+  
+  <ScrollViewer>
+    <StackPanel Margin="32" Spacing="24">
+      
+      <!-- Header con estilo ATH Móvil -->
+      <Border Background="#002855" 
+              CornerRadius="16" 
+              Padding="32,24"
+              BoxShadow="0 4 16 0 #22000000">
+        <StackPanel Spacing="8">
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <Border Background="#FF6600" 
+                    CornerRadius="12" 
+                    Width="48" 
+                    Height="48" 
+                    Padding="10">
+              <TextBlock Text="📊" 
+                         FontSize="24" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel VerticalAlignment="Center" Spacing="4">
+              <TextBlock Text="Reportes y E-Statements" 
+                         FontSize="24" 
+                         FontWeight="Bold" 
+                         Foreground="White"/>
+              <TextBlock Text="Exporta y gestiona tus estados de cuenta" 
+                         FontSize="13" 
+                         Foreground="#94A3B8"/>
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- Selector de cuenta y período -->
+      <Border Background="White" 
+              CornerRadius="16" 
+              Padding="24"
+              BoxShadow="0 2 12 0 #11000000">
+        <StackPanel Spacing="20">
+          <TextBlock Text="🗓️ Selecciona el período" 
+                     FontSize="18" 
+                     FontWeight="Bold" 
+                     Foreground="#1E293B"/>
+          
+          <Grid ColumnDefinitions="*" RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
+            <!-- Cuenta -->
+            <StackPanel Grid.Row="0">
+              <TextBlock Text="Cuenta" 
+                         FontSize="13" 
+                         FontWeight="Medium" 
+                         Foreground="#64748B" 
+                         Margin="0,0,0,6"/>
+              <ComboBox ItemsSource="{Binding Accounts}" 
+                        SelectedItem="{Binding SelectedAccount}" 
+                        Height="44"
+                        CornerRadius="8"
+                        HorizontalAlignment="Stretch"
+                        BorderBrush="#E2E8F0"/>
+            </StackPanel>
+
+            <!-- Mes y Año -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="12">
+              <StackPanel Grid.Column="0">
+                <TextBlock Text="Mes" 
+                           FontSize="13" 
+                           FontWeight="Medium" 
+                           Foreground="#64748B" 
+                           Margin="0,0,0,6"/>
+                <NumericUpDown Minimum="1" 
+                               Maximum="12" 
+                               Value="{Binding Month}"
+                               Height="44"
+                               CornerRadius="8"/>
+              </StackPanel>
+
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="Año" 
+                           FontSize="13" 
+                           FontWeight="Medium" 
+                           Foreground="#64748B" 
+                           Margin="0,0,0,6"/>
+                <NumericUpDown Minimum="2000" 
+                               Maximum="2100" 
+                               Value="{Binding Year}"
+                               Height="44"
+                               CornerRadius="8"/>
+              </StackPanel>
+            </Grid>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Opciones de exportación -->
+      <Border Background="White" 
+              CornerRadius="16" 
+              Padding="24"
+              BoxShadow="0 2 12 0 #11000000">
+        <StackPanel Spacing="20">
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <Border Background="#DBEAFE" CornerRadius="8" Width="40" Height="40" Padding="8">
+              <TextBlock Text="📥" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel VerticalAlignment="Center">
+              <TextBlock Text="Exportar Reporte" 
+                         FontSize="18" 
+                         FontWeight="Bold" 
+                         Foreground="#1E293B"/>
+              <TextBlock Text="Elige el formato que prefieras" 
+                         FontSize="12" 
+                         Foreground="#64748B"/>
+            </StackPanel>
+          </StackPanel>
+
+          <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+            <Button Grid.Column="0"
+                    Command="{Binding ExportCsvCommand}"
+                    Height="56"
+                    CornerRadius="12"
+                    Background="White"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="2">
+              <StackPanel Spacing="6">
+                <TextBlock Text="📄" FontSize="20" HorizontalAlignment="Center"/>
+                <TextBlock Text="CSV" 
+                           FontSize="13" 
+                           FontWeight="SemiBold" 
+                           Foreground="#1E293B"
+                           HorizontalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+
+            <Button Grid.Column="1"
+                    Command="{Binding ExportPdfCommand}"
+                    Height="56"
+                    CornerRadius="12"
+                    Background="White"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="2">
+              <StackPanel Spacing="6">
+                <TextBlock Text="📑" FontSize="20" HorizontalAlignment="Center"/>
+                <TextBlock Text="PDF" 
+                           FontSize="13" 
+                           FontWeight="SemiBold" 
+                           Foreground="#1E293B"
+                           HorizontalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+
+            <Button Grid.Column="2"
+                    Command="{Binding SendEStatementCommand}"
+                    Height="56"
+                    CornerRadius="12"
+                    Background="#FF6600"
+                    BorderThickness="0">
+              <StackPanel Spacing="6">
+                <TextBlock Text="📧" FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
+                <TextBlock Text="E-Mail" 
+                           FontSize="13" 
+                           FontWeight="SemiBold" 
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+          </Grid>
+
+          <!-- Mensaje de estado -->
+          <Border Background="#F0F9FF" 
+                  BorderBrush="#3B82F6" 
+                  BorderThickness="1" 
+                  CornerRadius="8" 
+                  Padding="12"
+                  IsVisible="{Binding LastMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <TextBlock Text="{Binding LastMessage}" 
+                       TextWrapping="Wrap" 
+                       FontSize="13"
+                       Foreground="#1E40AF"/>
+          </Border>
+        </StackPanel>
+      </Border>
+
     </StackPanel>
-    <StackPanel Orientation="Horizontal" Spacing="8">
-      <Button Content="CSV" Command="{Binding ExportCsvCommand}"/>
-      <Button Content="PDF" Command="{Binding ExportPdfCommand}"/>
-      <Button Content="Enviar E-Statement" Command="{Binding SendEStatementCommand}"/>
-    </StackPanel>
-    <TextBlock Text="{Binding LastMessage}" TextWrapping="Wrap" Foreground="Gray"/>
-  </StackPanel>
+  </ScrollViewer>
+  
 </UserControl>
