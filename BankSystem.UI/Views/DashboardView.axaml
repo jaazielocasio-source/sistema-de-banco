@@ -17,9 +17,12 @@
         </StackPanel>
       </Border>
     </StackPanel>
-    <GroupBox Header="Próximos pagos automáticos">
-      <ListBox ItemsSource="{Binding UpcomingPayments}"/>
-    </GroupBox>
+    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="8">
+      <StackPanel Spacing="6">
+        <TextBlock Text="Próximos pagos automáticos" FontWeight="Bold" FontSize="14"/>
+        <ListBox ItemsSource="{Binding UpcomingPayments}"/>
+      </StackPanel>
+    </Border>
     <Button Content="Refrescar" Command="{Binding RefreshCommand}" Width="140"/>
   </StackPanel>
 </UserControl>
