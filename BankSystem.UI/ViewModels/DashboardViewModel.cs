@@ -1,6 +1,7 @@
 using BankSystem.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -21,18 +22,45 @@ public partial class DashboardViewModel : ObservableObject
         _bank = bank;
         _scheduler = scheduler;
         _dialogs = dialogs;
+        
+        // Inicializar con valores por defecto
+        _totalBalance = 0m;
+        _accountCount = 0;
+        
         Refresh();
     }
 
     [RelayCommand]
     public void Refresh()
     {
-        TotalBalance = _bank.Accounts.Sum(a => a.Balance);
-        AccountCount = _bank.Accounts.Count;
-        UpcomingPayments.Clear();
-        foreach (var p in _bank.ScheduledPayments.OrderBy(p => p.NextDate).Take(5))
+        try
         {
-            UpcomingPayments.Add($"{p.NextDate:yyyy-MM-dd}: {p.SourceAccount}->{p.DestinationId} {p.Amount} ({p.Periodicity})");
+            // Calcular saldo total con manejo de errores
+            TotalBalance = _bank.Accounts?.Sum(a => a?.Balance ?? 0m) ?? 0m;
+            AccountCount = _bank.Accounts?.Count ?? 0;
+            
+            UpcomingPayments.Clear();
+            
+            if (_bank.ScheduledPayments != null)
+            {
+                foreach (var p in _bank.ScheduledPayments.OrderBy(p => p.NextDate).Take(5))
+                {
+                    UpcomingPayments.Add($"{p.NextDate:yyyy-MM-dd}: {p.SourceAccount}->{p.DestinationId} {p.Amount:C} ({p.Periodicity})");
+                }
+            }
+            
+            // Si no hay pagos programados, mostrar mensaje
+            if (UpcomingPayments.Count == 0)
+            {
+                UpcomingPayments.Add("No hay pagos automáticos programados");
+            }
+        }
+        catch (Exception ex)
+        {
+            TotalBalance = 0m;
+            AccountCount = 0;
+            UpcomingPayments.Clear();
+            UpcomingPayments.Add($"Error al cargar datos: {ex.Message}");
         }
     }
 }

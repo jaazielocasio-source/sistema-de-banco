@@ -38,43 +38,83 @@ public partial class AdminViewModel : ObservableObject
     [RelayCommand]
     private async Task CreateCustomerAsync()
     {
-        if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Email) || !Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        try
         {
-            await _dialogs.ShowErrorAsync("Email o nombre inválido.");
-            return;
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Email) || !Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                await _dialogs.ShowErrorAsync("Email o nombre inválido.");
+                return;
+            }
+            if (!Regex.IsMatch(Phone ?? string.Empty, @"^[0-9]{3}-[0-9]{3}-[0-9]{4}$"))
+            {
+                await _dialogs.ShowErrorAsync("Teléfono inválido (###-###-####).");
+                return;
+            }
+            var c = _bank.CreateCustomer(Name, Email, Phone ?? string.Empty, GovId);
+            StatusMessage = $"✅ Cliente creado con ID: {c.Id}";
+            
+            // Limpiar campos
+            Name = string.Empty;
+            Email = string.Empty;
+            Phone = string.Empty;
+            GovId = string.Empty;
         }
-        if (!Regex.IsMatch(Phone ?? string.Empty, @"^[0-9]{3}-[0-9]{3}-[0-9]{4}$"))
+        catch (System.Exception ex)
         {
-            await _dialogs.ShowErrorAsync("Teléfono inválido (###-###-####).");
-            return;
+            StatusMessage = $"❌ Error: {ex.Message}";
+            await _dialogs.ShowErrorAsync($"Error al crear cliente: {ex.Message}");
         }
-        var c = _bank.CreateCustomer(Name, Email, Phone, GovId);
-        StatusMessage = $"Cliente creado Id {c.Id}";
     }
 
     [RelayCommand]
     private async Task CreateAccountAsync()
     {
-        var acc = AccountFactory.CreateAccount(CustomerIdForAccount, AccountType, AccountCurrency);
-        if (acc == null)
+        try
         {
-            await _dialogs.ShowErrorAsync("Tipo de cuenta inválido.");
-            return;
+            if (CustomerIdForAccount <= 0)
+            {
+                await _dialogs.ShowErrorAsync("ID de cliente inválido.");
+                return;
+            }
+            
+            var acc = AccountFactory.CreateAccount(CustomerIdForAccount, AccountType, AccountCurrency);
+            if (acc == null)
+            {
+                await _dialogs.ShowErrorAsync("Tipo de cuenta inválido.");
+                return;
+            }
+            _bank.Accounts.Add(acc);
+            StatusMessage = $"✅ Cuenta {acc.Number} creada exitosamente";
+            
+            // Resetear valores
+            CustomerIdForAccount = 0;
         }
-        _bank.Accounts.Add(acc);
-        StatusMessage = $"Cuenta {acc.Number} creada";
+        catch (System.Exception ex)
+        {
+            StatusMessage = $"❌ Error: {ex.Message}";
+            await _dialogs.ShowErrorAsync($"Error al crear cuenta: {ex.Message}");
+        }
     }
 
     [RelayCommand]
     private async Task SetStatusAsync()
     {
-        if (string.IsNullOrWhiteSpace(AccountNumberStatus))
+        try
         {
-            await _dialogs.ShowErrorAsync("Número de cuenta requerido.");
-            return;
+            if (string.IsNullOrWhiteSpace(AccountNumberStatus))
+            {
+                await _dialogs.ShowErrorAsync("Número de cuenta requerido.");
+                return;
+            }
+            var ok = _bank.SetAccountStatus(AccountNumberStatus, NewStatus);
+            StatusMessage = ok ? $"✅ Estado actualizado a {NewStatus}" : "❌ No se pudo actualizar";
+            if (!ok) await _dialogs.ShowErrorAsync("No se pudo actualizar el estado.");
+            else AccountNumberStatus = string.Empty;
         }
-        var ok = _bank.SetAccountStatus(AccountNumberStatus, NewStatus);
-        StatusMessage = ok ? "Estado actualizado" : "No se pudo actualizar";
-        if (!ok) await _dialogs.ShowErrorAsync("No se pudo actualizar el estado.");
+        catch (System.Exception ex)
+        {
+            StatusMessage = $"❌ Error: {ex.Message}";
+            await _dialogs.ShowErrorAsync($"Error al actualizar estado: {ex.Message}");
+        }
     }
 }
