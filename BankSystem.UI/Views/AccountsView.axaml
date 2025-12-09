@@ -6,26 +6,138 @@
   <UserControl.Resources>
     <conv:MaskingConverter x:Key="MaskingConverter"/>
   </UserControl.Resources>
-  <DockPanel>
-    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="8" Margin="0 8 0 0">
-      <TextBlock Text="Monto" VerticalAlignment="Center"/>
-      <NumericUpDown Minimum="0" Maximum="1000000" Width="120" Value="{Binding Amount}"/>
-      <Button Content="Depositar" Command="{Binding DepositCommand}"/>
-      <Button Content="Retirar" Command="{Binding WithdrawCommand}"/>
-      <Button Content="Transferir" Command="{Binding TransferCommand}"/>
-      <Button Content="Freeze" Command="{Binding FreezeCommand}"/>
-      <Button Content="Unfreeze" Command="{Binding UnfreezeCommand}"/>
-      <TextBlock Text="{Binding Status}" Margin="12 0"/>
+  
+  <StackPanel Spacing="24">
+    <!-- Header -->
+    <StackPanel Spacing="8">
+      <TextBlock Text="Mis Cuentas" FontSize="32" FontWeight="Bold" Foreground="#1E293B"/>
+      <TextBlock Text="Gestiona tus cuentas y tarjetas" FontSize="14" Foreground="#64748B"/>
     </StackPanel>
-    <controls:DataGrid ItemsSource="{Binding Accounts}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedAccount}">
-      <controls:DataGrid.Columns>
-        <controls:DataGridTextColumn Header="Cuenta" Binding="{Binding Number, Converter={StaticResource MaskingConverter}, ConverterParameter=account}"/>
-        <controls:DataGridTextColumn Header="Tipo" Binding="{Binding Type}"/>
-        <controls:DataGridTextColumn Header="Moneda" Binding="{Binding Currency}"/>
-        <controls:DataGridTextColumn Header="Balance" Binding="{Binding Balance, StringFormat='{}{0:C}'}"/>
-        <controls:DataGridTextColumn Header="Estado" Binding="{Binding Status}"/>
-        <controls:DataGridTextColumn Header="Cliente" Binding="{Binding CustomerId}"/>
-      </controls:DataGrid.Columns>
-    </controls:DataGrid>
-  </DockPanel>
+
+    <!-- Visual Cards Grid -->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+      <ItemsControl ItemsSource="{Binding Accounts}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="card" 
+                    Width="340" 
+                    Height="200" 
+                    Margin="0,0,20,20"
+                    Background="Linear(0%,0%,100%,100%,#FF6B35,#F7931E)">
+              <Grid RowDefinitions="Auto,*,Auto">
+                <!-- Card Header -->
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0" Text="{Binding Type}" 
+                             FontSize="14" 
+                             FontWeight="Bold" 
+                             Foreground="White"
+                             Opacity="0.9"/>
+                  <TextBlock Grid.Column="1" Text="💳" FontSize="24"/>
+                </Grid>
+
+                <!-- Card Number -->
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" Spacing="12">
+                  <TextBlock Text="{Binding Number, Converter={StaticResource MaskingConverter}, ConverterParameter=account}" 
+                             FontSize="20" 
+                             FontWeight="Bold" 
+                             Foreground="White"
+                             LetterSpacing="2"/>
+                  <TextBlock Text="{Binding Balance, StringFormat='Saldo: {0:C}'}" 
+                             FontSize="28" 
+                             FontWeight="Bold" 
+                             Foreground="White"/>
+                </StackPanel>
+
+                <!-- Card Footer -->
+                <Grid Grid.Row="2" ColumnDefinitions="*,Auto">
+                  <StackPanel Grid.Column="0">
+                    <TextBlock Text="ESTADO" 
+                               FontSize="10" 
+                               Foreground="White" 
+                               Opacity="0.7"/>
+                    <TextBlock Text="{Binding Status}" 
+                               FontSize="14" 
+                               FontWeight="Bold" 
+                               Foreground="White"/>
+                  </StackPanel>
+                  <StackPanel Grid.Column="1">
+                    <TextBlock Text="MONEDA" 
+                               FontSize="10" 
+                               Foreground="White" 
+                               Opacity="0.7"
+                               HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Currency}" 
+                               FontSize="14" 
+                               FontWeight="Bold" 
+                               Foreground="White"
+                               HorizontalAlignment="Right"/>
+                  </StackPanel>
+                </Grid>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+
+    <!-- Action Panel -->
+    <Border Classes="card">
+      <StackPanel Spacing="16">
+        <TextBlock Text="Operaciones" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+        
+        <Grid ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Column="0" Text="Monto:" VerticalAlignment="Center" FontWeight="Medium" Margin="0,0,12,0"/>
+          <NumericUpDown Grid.Column="1" 
+                         Minimum="0" 
+                         Maximum="1000000" 
+                         Value="{Binding Amount}"
+                         CornerRadius="8"
+                         Height="40"/>
+        </Grid>
+
+        <WrapPanel>
+          <Button Classes="success" Content="💵 Depositar" Command="{Binding DepositCommand}" Margin="0,0,12,0"/>
+          <Button Classes="danger" Content="💸 Retirar" Command="{Binding WithdrawCommand}" Margin="0,0,12,0"/>
+          <Button Classes="primary" Content="🔄 Transferir" Command="{Binding TransferCommand}" Margin="0,0,12,0"/>
+          <Button Classes="danger" Content="🔒 Desactivar Tarjeta" Command="{Binding FreezeCommand}" Margin="0,0,12,0"/>
+          <Button Classes="success" Content="🔓 Activar Tarjeta" Command="{Binding UnfreezeCommand}" Margin="0,0,12,0"/>
+        </WrapPanel>
+
+        <TextBlock Text="{Binding Status}" 
+                   FontSize="14" 
+                   Foreground="#10B981" 
+                   FontWeight="Medium"
+                   IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+      </StackPanel>
+    </Border>
+
+    <!-- Detailed Table View -->
+    <Border Classes="card">
+      <StackPanel Spacing="16">
+        <TextBlock Text="Lista Detallada" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+        <controls:DataGrid ItemsSource="{Binding Accounts}" 
+                          AutoGenerateColumns="False" 
+                          SelectedItem="{Binding SelectedAccount}"
+                          GridLinesVisibility="None"
+                          Background="Transparent"
+                          RowBackground="#F8FAFC"
+                          HeadersVisibility="Column">
+          <controls:DataGrid.Columns>
+            <controls:DataGridTextColumn Header="Cuenta" Binding="{Binding Number, Converter={StaticResource MaskingConverter}, ConverterParameter=account}" Width="*"/>
+            <controls:DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="*"/>
+            <controls:DataGridTextColumn Header="Moneda" Binding="{Binding Currency}" Width="80"/>
+            <controls:DataGridTextColumn Header="Balance" Binding="{Binding Balance, StringFormat='{}{0:C}'}" Width="*"/>
+            <controls:DataGridTextColumn Header="Estado" Binding="{Binding Status}" Width="100"/>
+            <controls:DataGridTextColumn Header="Cliente" Binding="{Binding CustomerId}" Width="100"/>
+          </controls:DataGrid.Columns>
+        </controls:DataGrid>
+      </StackPanel>
+    </Border>
+  </StackPanel>
 </UserControl>

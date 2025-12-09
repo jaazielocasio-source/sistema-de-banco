@@ -2,16 +2,102 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Styles.Resources>
     <FontFamily x:Key="AppFont">Segoe UI, Helvetica Neue, Arial</FontFamily>
-    <Thickness x:Key="PageMargin">16</Thickness>
-    <SolidColorBrush x:Key="SidebarBackground" Color="#0F172A"/>
-    <SolidColorBrush x:Key="SidebarForeground" Color="#E2E8F0"/>
-    <SolidColorBrush x:Key="AccentBrush" Color="#2563EB"/>
+    <Thickness x:Key="PageMargin">24</Thickness>
+    
+    <!-- Discovery-inspired Colors -->
+    <SolidColorBrush x:Key="SidebarBackground" Color="#1A1D2E"/>
+    <SolidColorBrush x:Key="SidebarForeground" Color="#F8FAFC"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#FF6B35"/>
+    <SolidColorBrush x:Key="AccentHover" Color="#FF8555"/>
+    <SolidColorBrush x:Key="CardBackground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="CardShadow" Color="#10000000"/>
+    <SolidColorBrush x:Key="PrimaryGradientStart" Color="#FF6B35"/>
+    <SolidColorBrush x:Key="PrimaryGradientEnd" Color="#F7931E"/>
+    <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+    <SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+    <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+    <SolidColorBrush x:Key="InfoColor" Color="#3B82F6"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#F1F5F9"/>
   </Styles.Resources>
+
+  <!-- Sidebar Button Style -->
   <Style Selector="Button.sidebar">
     <Setter Property="Foreground" Value="{StaticResource SidebarForeground}"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="Padding" Value="16,12"/>
+    <Setter Property="Margin" Value="8,2"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  
+  <Style Selector="Button.sidebar:pointerover">
+    <Setter Property="Background" Value="#2D3348"/>
+  </Style>
+  
+  <Style Selector="Button.sidebar:pressed">
+    <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+  </Style>
+
+  <!-- Card Style -->
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+    <Setter Property="CornerRadius" Value="12"/>
+    <Setter Property="Padding" Value="20"/>
+    <Setter Property="BoxShadow" Value="0 4 12 0 #10000000"/>
+  </Style>
+
+  <!-- Primary Button Style -->
+  <Style Selector="Button.primary">
+    <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Padding" Value="20,10"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  
+  <Style Selector="Button.primary:pointerover">
+    <Setter Property="Background" Value="{StaticResource AccentHover}"/>
+  </Style>
+
+  <!-- Danger Button Style -->
+  <Style Selector="Button.danger">
+    <Setter Property="Background" Value="{StaticResource DangerColor}"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Padding" Value="16,10"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+
+  <!-- Success Button Style -->
+  <Style Selector="Button.success">
+    <Setter Property="Background" Value="{StaticResource SuccessColor}"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Padding" Value="16,10"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+
+  <!-- TextBox Style -->
+  <Style Selector="TextBox">
+    <Setter Property="CornerRadius" Value="8"/>
     <Setter Property="Padding" Value="12"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="#CBD5E1"/>
+  </Style>
+  
+  <Style Selector="TextBox:focus">
+    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+    <Setter Property="BorderThickness" Value="2"/>
   </Style>
 </Styles>

@@ -5,25 +5,46 @@
         xmlns:vm="clr-namespace:BankSystem.UI.ViewModels"
         x:Class="BankSystem.UI.Views.MainWindow"
         mc:Ignorable="d"
-        Width="1100" Height="720"
-        Title="BankSystem UI">
-  <Grid ColumnDefinitions="220, *">
+        Width="1280" Height="800"
+        Title="BankSystem - Banking Made Simple"
+        WindowStartupLocation="CenterScreen">
+  
+  <Grid ColumnDefinitions="260, *">
+    <!-- Sidebar -->
     <Border Background="{StaticResource SidebarBackground}">
-      <StackPanel Margin="0" Spacing="4">
-        <TextBlock Text="BankSystem" Foreground="{StaticResource SidebarForeground}" FontSize="20" FontWeight="Bold" Margin="12 16"/>
-        <Button Classes="sidebar" Content="Dashboard" Command="{Binding NavigateDashboardCommand}"/>
-        <Button Classes="sidebar" Content="Cuentas" Command="{Binding NavigateAccountsCommand}"/>
-        <Button Classes="sidebar" Content="Préstamos" Command="{Binding NavigateLoansCommand}"/>
-        <Button Classes="sidebar" Content="Transferencias" Command="{Binding NavigateTransferCommand}"/>
-        <Button Classes="sidebar" Content="AutoPay" Command="{Binding NavigateAutoPayCommand}"/>
-        <Button Classes="sidebar" Content="Reportes" Command="{Binding NavigateReportsCommand}"/>
-        <Button Classes="sidebar" Content="Auditoría" Command="{Binding NavigateAuditCommand}"/>
-        <Button Classes="sidebar" Content="Admin" Command="{Binding NavigateAdminCommand}"/>
+      <StackPanel Margin="0" Spacing="2">
+        <!-- Logo Area -->
+        <Border Padding="20,24" Margin="0,0,0,12">
+          <StackPanel Spacing="8">
+            <TextBlock Text="💳 BankSystem" 
+                       Foreground="{StaticResource SidebarForeground}" 
+                       FontSize="22" 
+                       FontWeight="Bold"/>
+            <TextBlock Text="Banking Made Simple" 
+                       Foreground="#94A3B8" 
+                       FontSize="12"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Navigation Menu -->
+        <Button Classes="sidebar" Content="📊 Dashboard" Command="{Binding NavigateDashboardCommand}"/>
+        <Button Classes="sidebar" Content="💰 Cuentas" Command="{Binding NavigateAccountsCommand}"/>
+        <Button Classes="sidebar" Content="🏦 Préstamos" Command="{Binding NavigateLoansCommand}"/>
+        <Button Classes="sidebar" Content="💸 Transferencias" Command="{Binding NavigateTransferCommand}"/>
+        <Button Classes="sidebar" Content="⚡ AutoPay" Command="{Binding NavigateAutoPayCommand}"/>
+        <Button Classes="sidebar" Content="📈 Reportes" Command="{Binding NavigateReportsCommand}"/>
+        <Button Classes="sidebar" Content="📋 Auditoría" Command="{Binding NavigateAuditCommand}"/>
+        <Button Classes="sidebar" Content="⚙️ Admin" Command="{Binding NavigateAdminCommand}"/>
       </StackPanel>
     </Border>
 
-    <Border Grid.Column="1" Padding="{StaticResource PageMargin}">
-      <ContentControl Content="{Binding CurrentView}"/>
+    <!-- Main Content Area -->
+    <Border Grid.Column="1" Background="{StaticResource BackgroundColor}">
+      <ScrollViewer>
+        <Border Padding="{StaticResource PageMargin}">
+          <ContentControl Content="{Binding CurrentView}"/>
+        </Border>
+      </ScrollViewer>
     </Border>
   </Grid>
 </Window>

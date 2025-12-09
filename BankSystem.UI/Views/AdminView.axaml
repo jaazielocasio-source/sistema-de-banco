@@ -1,56 +1,125 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="BankSystem.UI.Views.AdminView">
-  <StackPanel Spacing="10">
-    <TextBlock Text="Admin" FontSize="20" FontWeight="Bold"/>
+  <StackPanel Spacing="24">
+    <!-- Header -->
+    <StackPanel Spacing="8">
+      <TextBlock Text="Panel de Administración" FontSize="32" FontWeight="Bold" Foreground="#1E293B"/>
+      <TextBlock Text="Gestiona clientes, cuentas y configuraciones" FontSize="14" Foreground="#64748B"/>
+    </StackPanel>
 
-    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="8">
-      <StackPanel Spacing="6">
-        <TextBlock Text="Crear cliente" FontWeight="Bold" FontSize="14"/>
-        <TextBox Watermark="Nombre" Text="{Binding Name}"/>
-        <TextBox Watermark="Email" Text="{Binding Email}"/>
-        <TextBox Watermark="Teléfono ###-###-####" Text="{Binding Phone}"/>
-        <TextBox Watermark="ID Gobierno" Text="{Binding GovId}"/>
-        <Button Content="Crear" Command="{Binding CreateCustomerCommand}" Width="120"/>
-      </StackPanel>
-    </Border>
-
-    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="8">
-      <StackPanel Spacing="6">
-        <TextBlock Text="Crear cuenta" FontWeight="Bold" FontSize="14"/>
-        <StackPanel Orientation="Horizontal" Spacing="8">
-          <TextBlock Text="Cliente Id"/>
-          <NumericUpDown Minimum="1" Maximum="999999" Value="{Binding CustomerIdForAccount}"/>
+    <!-- Create Customer Card -->
+    <Border Classes="card">
+      <StackPanel Spacing="16">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Border Background="#DBEAFE" CornerRadius="8" Width="40" Height="40" Padding="8">
+            <TextBlock Text="👤" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+          </Border>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Crear Cliente" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+            <TextBlock Text="Registra un nuevo cliente en el sistema" FontSize="12" Foreground="#64748B"/>
+          </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="8">
-          <TextBlock Text="Tipo"/>
-          <ComboBox SelectedValue="{Binding AccountType}" SelectedValueBinding="{Binding Tag}">
-            <ComboBoxItem Content="1 Ahorro" Tag="1"/>
-            <ComboBoxItem Content="2 Corriente" Tag="2"/>
-            <ComboBoxItem Content="3 CD" Tag="3"/>
-          </ComboBox>
-          <TextBlock Text="Moneda"/>
-          <ComboBox SelectedValue="{Binding AccountCurrency}" SelectedValueBinding="{Binding Tag}">
-            <ComboBoxItem Content="USD" Tag="USD"/>
-            <ComboBoxItem Content="EUR" Tag="EUR"/>
-            <ComboBoxItem Content="JPY" Tag="JPY"/>
-            <ComboBoxItem Content="KRW" Tag="KRW"/>
-            <ComboBoxItem Content="BOB" Tag="BOB"/>
-            <ComboBoxItem Content="GBP" Tag="GBP"/>
-          </ComboBox>
-        </StackPanel>
-        <Button Content="Crear cuenta" Command="{Binding CreateAccountCommand}" Width="140"/>
+        
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+          <TextBox Grid.Row="0" Grid.Column="0" Watermark="Nombre completo" Text="{Binding Name}"/>
+          <TextBox Grid.Row="0" Grid.Column="1" Watermark="Email" Text="{Binding Email}"/>
+          <TextBox Grid.Row="1" Grid.Column="0" Watermark="Teléfono ###-###-####" Text="{Binding Phone}"/>
+          <TextBox Grid.Row="1" Grid.Column="1" Watermark="ID Gobierno" Text="{Binding GovId}"/>
+        </Grid>
+        
+        <Button Classes="primary" Content="➕ Crear Cliente" Command="{Binding CreateCustomerCommand}" HorizontalAlignment="Left" Padding="24,12"/>
       </StackPanel>
     </Border>
 
-    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Padding="8">
-      <StackPanel Spacing="6">
-        <TextBlock Text="Actualizar estado de cuenta" FontWeight="Bold" FontSize="14"/>
-        <TextBox Watermark="Número de cuenta" Text="{Binding AccountNumberStatus}"/>
-        <ComboBox ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding NewStatus}"/>
-        <Button Content="Actualizar" Command="{Binding SetStatusCommand}" Width="120"/>
+    <!-- Create Account Card -->
+    <Border Classes="card">
+      <StackPanel Spacing="16">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Border Background="#FEF3C7" CornerRadius="8" Width="40" Height="40" Padding="8">
+            <TextBlock Text="💳" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+          </Border>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Crear Cuenta Bancaria" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+            <TextBlock Text="Abre una nueva cuenta para un cliente" FontSize="12" Foreground="#64748B"/>
+          </StackPanel>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+          <StackPanel Grid.Row="0" Grid.Column="0" Spacing="8" Margin="0,0,8,0">
+            <TextBlock Text="Cliente ID" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
+            <NumericUpDown Minimum="1" Maximum="999999" Value="{Binding CustomerIdForAccount}" Height="40" CornerRadius="8"/>
+          </StackPanel>
+          
+          <StackPanel Grid.Row="0" Grid.Column="1" Spacing="8" Margin="8,0,8,0">
+            <TextBlock Text="Tipo de Cuenta" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
+            <ComboBox SelectedValue="{Binding AccountType}" SelectedValueBinding="{Binding Tag}" Height="40" CornerRadius="8">
+              <ComboBoxItem Content="💰 Ahorro" Tag="1"/>
+              <ComboBoxItem Content="💵 Corriente" Tag="2"/>
+              <ComboBoxItem Content="📊 Certificado de Depósito" Tag="3"/>
+            </ComboBox>
+          </StackPanel>
+          
+          <StackPanel Grid.Row="0" Grid.Column="2" Spacing="8" Margin="8,0,0,0">
+            <TextBlock Text="Moneda" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
+            <ComboBox SelectedValue="{Binding AccountCurrency}" SelectedValueBinding="{Binding Tag}" Height="40" CornerRadius="8">
+              <ComboBoxItem Content="🇺🇸 USD" Tag="USD"/>
+              <ComboBoxItem Content="🇪🇺 EUR" Tag="EUR"/>
+              <ComboBoxItem Content="🇯🇵 JPY" Tag="JPY"/>
+              <ComboBoxItem Content="🇰🇷 KRW" Tag="KRW"/>
+              <ComboBoxItem Content="🇧🇴 BOB" Tag="BOB"/>
+              <ComboBoxItem Content="🇬🇧 GBP" Tag="GBP"/>
+            </ComboBox>
+          </StackPanel>
+        </Grid>
+        
+        <Button Classes="primary" Content="➕ Crear Cuenta" Command="{Binding CreateAccountCommand}" HorizontalAlignment="Left" Padding="24,12"/>
       </StackPanel>
     </Border>
-    <TextBlock Text="{Binding StatusMessage}" Foreground="Gray"/>
+
+    <!-- Update Account Status Card -->
+    <Border Classes="card">
+      <StackPanel Spacing="16">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Border Background="#FEE2E2" CornerRadius="8" Width="40" Height="40" Padding="8">
+            <TextBlock Text="⚙️" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+          </Border>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Actualizar Estado de Cuenta" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+            <TextBlock Text="Cambia el estado de una cuenta bancaria" FontSize="12" Foreground="#64748B"/>
+          </StackPanel>
+        </StackPanel>
+
+        <Grid ColumnDefinitions="*,*">
+          <StackPanel Grid.Column="0" Spacing="8">
+            <TextBlock Text="Número de Cuenta" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
+            <TextBox Watermark="Ingresa el número de cuenta" Text="{Binding AccountNumberStatus}" Height="40"/>
+          </StackPanel>
+          
+          <StackPanel Grid.Column="1" Spacing="8">
+            <TextBlock Text="Nuevo Estado" FontWeight="Medium" FontSize="12" Foreground="#64748B"/>
+            <ComboBox ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding NewStatus}" Height="40" CornerRadius="8"/>
+          </StackPanel>
+        </Grid>
+        
+        <Button Classes="primary" Content="✅ Actualizar Estado" Command="{Binding SetStatusCommand}" HorizontalAlignment="Left" Padding="24,12"/>
+      </StackPanel>
+    </Border>
+
+    <!-- Status Message -->
+    <Border Classes="card" 
+            Background="#ECFDF5" 
+            BorderBrush="#10B981" 
+            BorderThickness="2"
+            IsVisible="{Binding StatusMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <TextBlock Text="✅" FontSize="20"/>
+        <TextBlock Text="{Binding StatusMessage}" 
+                   FontSize="14" 
+                   Foreground="#10B981" 
+                   FontWeight="Medium"
+                   VerticalAlignment="Center"/>
+      </StackPanel>
+    </Border>
   </StackPanel>
 </UserControl>
